@@ -1,5 +1,12 @@
-from operator import mul
 import os
+from threading import Thread, Lock, current_thread
+import time
+import sys
+from queue import Queue
+#Iterable = Python object with __iter__ or __getitem__ method defined returning iterator
+#Iterator = Python object with __next__ or next method defined
+#Iteration = Taking item from something like lists, the process itself
+
 
 def fruitList():
     define="#Lists"
@@ -51,7 +58,7 @@ def dictionaryOnenTwo():
         print(key, value)
 
 def mySet():
-    define="#Sets are Unordered, Mutable, No Duplicates"
+    define="Sets are Unordered, Mutable, No Duplicates"
     mySet={1,2,3}
     print("My Set:", mySet,define)
 
@@ -99,7 +106,7 @@ def string():
     print(myString, "#Removing Whitespace with .strip() method")
     print(myString.upper(), myString.lower(), "#Upper and Lower with upper(), lower() methods")
     print(myString.endswith('Hello')) #Returns boolean value 
-    print(myString.find('o')) #Returns indexm -1 if character/substring not found
+    print(myString.find('o')) #Returns index -1 if character/substring not found
     print(myString.count('p')) #How many characters in string
     print(myString.replace('World', 'Universe')) #Replaces first word with second
 
@@ -127,11 +134,8 @@ def string():
     myVar="The variable is {} and {}".format(var,var2)#New Format, multiple variables with "{} and {}".format
     print(myVar)
 
-    myVar=f"The variable is {var3} and {var4}" #f is New Format, fastest
+    myVar=f"The variable is {varFloat:.2f} and {varFloat:.2f}" #f is New Format, fastest
     print(myVar, "#New Method")
-
-    myFloat="The variable is {}".format(varFloat) #New Format, using .format method with variable argument
-    print(myFloat)
 
     myFloat="The variable is {:.2f}".format(varFloat) #New Format, :.2f = two decimal places
     print(myFloat)
@@ -253,28 +257,42 @@ def lambdaFunction(): #One line function that looks like lambda arguments: expre
     e=[x for x in a if x%2==0] #Same as filter
     print("Same as filter:", e)
 
-
 #Errors and Exceptions
-class ValueTooHighError(Exception):
-    pass
-
-class ValueTooLowError(Exception):
-    def __init__(self,message,value):
-        self.message = message
-        self.value = value
-
 def test_value(x):
+
+    class ValueTooHighError(Exception):
+        pass
+
+    class ValueTooLowError(Exception):
+        def __init__(self,message,value):
+            self.message = message
+            self.value = value
+
     if x>100:
         raise ValueTooHighError('Value is too high', x)
     if x<5:
         raise ValueTooLowError('Value too small', x)
 
-try:
-    test_value(1)
-except ValueTooHighError as e:
-    print(e)
-except ValueTooLowError as e:
-    print(e.message, e.value) 
+    try:
+        test_value()
+    except ValueTooHighError as e:
+        print(e)
+    except ValueTooLowError as e:
+        print(e.message, e.value) 
+
+#Range returns sequence of numbers by 0 by default range(#1,#2,#3) which is 1 - 2, by #3 increments
+def range_function():
+    print("Input number range to end at:", end="")
+    number_n=int(input())
+    
+    print("Input number range increment:", end="")
+    number_i=int(input())
+
+    x = range(1,number_n,number_i)
+    for i in x:
+        print(i)
+
+#range_function()
 
 def logging(): #Defaults to warning and above printed
     import logging
@@ -286,6 +304,297 @@ def logging(): #Defaults to warning and above printed
     logging.error('This is a error message')
     logging.critical('This is a critical message')
 
+def randomNumbers():
+    import random
+
+
+def my_decorator(new_func):
+    def wrapper():
+        print("Something here first.")
+        new_func()
+        print("Something here after")
+    return wrapper
+
+def do_something():
+    print("Here is SOMETHING")
+
+do_something = my_decorator(do_something) #Passes do_something to new_func within my_decorator 
+#do_something()
+
+
+#*Arg and **kwarg
+def var_args(first_arg, *argv):
+    print("First normal arg:", first_arg)
+    for arg in argv:
+        print("Another arg through *argv:", arg)
+
+#var_args('One', 'Two', 'Three', 'Testy')
+
+
+
+
+
+#Mapping & Filtering
+#Process & Transform items in iterable table w/o using explicit for loop
+#Two arguments, 1st function, 2nd my list
+
+def mapping():
+    #Temperatures in celsius
+    cels_temps = [("US", 50), ("Africa", 70), ("Australia", 90), ("Haiti", 50)]
+    
+    #Celsius to fahrenheit conversion via Lambda
+    cels_to_fahr = lambda data: (data[0], (9/5)*data[1]+32)
+
+    #Map function to iterate thru cels temperatures
+    print("Mapping cels to fahranheit:", list(map(cels_to_fahr,cels_temps)))
+
+#mapping()
+
+
+
+#Filtering filters out unneeded data
+def filtering():
+    import statistics
+    random_data=[1.3,2.7,0.8,4.1,4.3,-0.1]
+    average=statistics.mean(random_data)
+    print("Average of data:", average)
+
+    #Select values above average
+    filter(lambda x:x>average,random_data)
+    print("Filter for above average:", list(filter(lambda x:x>average,random_data)))
+
+    #Select values below average
+    print("Filter for below average:", list(filter(lambda x:x<average,random_data)))
+
+#filtering()
+
+#Removing empty elements, careful as 0, 0.0 would be removed, as can be significant
+def filtering_countries():
+    countries=["","Argentina","Brazil","","Chili","","Venezuela"]
+    print("Removing empty elements w/ filtering:", list(filter(None,countries)))
+
+#filtering_countries()
+
+#Python states use functools.reduce() in place of this, as for loop more readable
+def reduce_function():
+    from functools import reduce
+
+    #Multiply all numbers in a list
+    data=[2,3,5,7,11,13,17,19.23,29]
+    multiplier=lambda x,y:x*y
+    print("Reduce function:", reduce(multiplier,data))
+
+    product=1
+    for x in data:
+        product *= x
+    print("For loop instead of reduce:", product)
+
+#reduce_function()
+
+
+def my_generator():
+    yield 1
+    yield 2, 3
+
+    #Only calls 1st yield
+    value=next(my_generator())
+    print(value)
+
+    #Another required for 2nd yield
+    value=next(my_generator())
+    print(value)
+
+my_generator()
+
+#Collections Module
+
+
+#Generators# 1 at a time and only when asked, memory efficient w large data sets, yeild
+
+
+#Fibbonachi Sequence
+def fib():
+    a, b = 0, 1
+    while True:            # First iteration:
+        yield a            # yield 0 to start with and then
+        a, b = b, a + b    # a will now be 1, and b will also be 1, (0 + 1)
+
+        for index, fibonacci_number in zip(range(10), fib()): #Indent back twice to run
+            print('{i:3}: {f:3}'.format(i=index, f=fibonacci_number))
+
+
+#Multiprocessing
+def multiprocessing():
+    from multiprocessing import Process
+    import os
+    import time
+
+    def square_numbers():
+        for i in range(100):
+            i*i
+            time.sleep(0.1)
+
+    processes = []
+    num_processes = os.cpu_count()
+
+    #Create processes
+    for i in range(num_processes):
+        proc = Process(target=square_numbers)
+        processes.append(proc)
+
+    #Start
+    for proc in processes:
+        proc.start()
+    
+    #Join
+    for proc in processes:
+        proc.join() #Wait for process to finish, locked main thread
+
+    print("end main") #Will only reach this point once 
+
+#Multithreading
+def multithreading():
+    from threading import Thread
+    import time
+
+    def square_numbers():
+        for i in range(100):
+            i*i
+            time.sleep(0.1)
+
+    threads = []
+    num_threads = 10
+
+    #Create threads
+    for i in range(num_threads):
+        thread = Thread(target=square_numbers)
+        threads.append(thread)
+
+    #Start
+    for thread in threads:
+        thread.start()
+    
+    #Join
+    for thread in threads:
+        thread.join() #Wait for process to finish, locked main thread
+
+    print("end main") #Will only reach this point once 
+
+
+
+
+
+
+
+
+database_value = 0
+
+def increase(lock): ####Prevent Race condition with LOCK Paremeter and lock variable below
+    global database_value #Accesses global variable
+
+    with lock:
+        #Dont need this if using with lock: lock.acquire() ####Everytime lock acquired, needs release, state is locked, can modify value w/o switching back, 2nd thread can run thru this
+        local_copy = database_value
+        local_copy += 1 #Increasing database value
+        time.sleep(0.1)
+        database_value = local_copy
+        #Don't need this if using with lock: lock.release() ####Everytime lock acquired, needs release
+
+if __name__ == "__main__":
+  
+    lock = Lock() ######Prevent race condition with LOCK value
+    print("start value", database_value) #Start
+
+    thread1 = Thread(target=increase, args=(lock,)) ####Tuple, so needs comma to prevent race condition
+    thread2 = Thread(target=increase, args=(lock,)) ####Tuple, so needs comma to prevent race condition
+
+    thread1.start()
+    thread2.start()
+
+    thread1.join()
+    thread2.join()
+
+    print("end value", database_value) #end
+    print ("end main")
+
+def queue_get():
+    if __name__ == "__main__":
+
+        que = Queue()
+
+        que.put(1)
+        que.put(2)
+        que.put(3)
+
+        #3, 2, 1 --> Front
+        first = que.get()
+        second = que.get()
+        third = que.get()
+
+        print("First in queue:", first)
+        print("First in queue:", second)
+        print("Third in queue:", third)
+
+        #que.join() #Blocks until all in queue processed
+        que.task_done() #Always need this is using que.get()
+
+        sys.exit()
+#queue_get()
+
+
+
+def worker(que,lock): ###Will need lock parameter to prevent duplicate threads from appearing
+    while True:
+        value = que.get() #Will get first value
+        #Processing..
+        with lock: ###Need lock here to prevent duplicate threads from accessing
+            print(f'in {current_thread().name} got {value}')
+        que.task_done()
+
+if __name__ == "__main__":
+
+        que = Queue()
+        lock=Lock()
+        num_threads = 10
+
+        for i in range(num_threads):
+            thread = Thread(target=worker, args=(que,lock))
+            thread.daemon=True ##Background thread exits when main thread exits, DEFAULT False, without it process will continue
+            thread.start()
+
+        for i in range(1, 21):
+            que.put(i)
+
+        que.join()
+
+        sys.exit()
+
+"""PROCESSES
+#Process = Instance of a program (e.g. a Python Interpreter, FireFox, etc.)
+#+ Can use multiple CPUs, Cores
+#+ Separate memory Space -> Memory not shared between processes
+#+ New Process stated independently from others
+#+ Proceses are interruptable/killable
+#+ One GIL (Global interpreter lock) for each Process -> Avoids GIL Limitation
+#- Heavyweight, More Memory, Slower than starting thread, IPC (Interprocess Comm.) Complicated
+
+#THREADS
+#Threads = Entity within process that can be scheduled, process can spawn multiple threads
+#+ All threads within process share same memory, Lightweight
+#+ Thread is faster starting than Process
+#+ Great of I/O-bound tasks
+#- Limited by GIL, only one thread at a time
+#- No effect for CPU-bound tasks
+#- Not interruptable, killable
+#- Careful with race conditions
+#       Race conditions are when two threads try to modify same variable at same time
+
+
+#GIL GLOBAL INTERPRETER LOCK
+#A lock that allows only 1 thread at a time to execute in Python
+#Needed in CPython because memory management is not thread-safe
+#Avoid Multiprocessing, use different free-threaded Python Implementation (Jython, IronPython)
+#Use Python as a wrapper for third-party libraries (C/C++) -> Numpy, scipy"""
 
 #def checkKey(dict, keyValue):
 #    dict = {'a': 100, 'b':200, 'c':300}
@@ -307,12 +616,27 @@ def logging(): #Defaults to warning and above printed
 #string()
 #myCollections()
 #iterTools()
-lambdaFunction()
+#lambdaFunction()
+#test_value(1)
+#jsonTut()
+#multiprocessing()
+#ultithreading()
 
-import time
-start_time=time.time()
-a=1000000
-a=a*10000000000000000
-stop_time=time.time()
-print("Duration: {}".format(stop_time - start_time))
-print (f"Duration: {start_time - start_time}")
+#import time
+#start_time=time.time()
+#a=1000000
+#a=a*10000000000000000
+##stop_time=time.time()
+#print("Duration: {}".format(stop_time - start_time))
+#print (f"Duration: {start_time - start_time}")
+
+
+###ROBOT PROJECT###
+#sudo apt-get install -y git python3-pip python3-smbus i2c-tools
+#pip install git+https://github.com/orionrobots/Raspi_MotorHAT
+#sudo raspi-config
+#Interfacing Options > I2C > Enable
+#Interfacing Options > SPI > Enable
+#sudo reboot
+#sudo i2cdetect -y 1 #Scans I2C bus 1 for devices attached to Pi
+#Controller found at 0x6f
