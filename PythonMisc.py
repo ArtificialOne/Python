@@ -8,76 +8,76 @@ from queue import Queue
 #Iteration = Taking item from something like lists, the process itself
 
 
-def fruitList():
+def fruit_list():
     define="#Lists"
-    fruitList=["Apple","Cherry"]
-    print("My List:",fruitList,define)
+    fruit_list=["Apple","Cherry"]
+    print("My List:",fruit_list,define)
 
-    fruitList.append("Lemon")
-    print(len(fruitList))
+    fruit_list.append("Lemon")
+    print(len(fruit_list))
 
-    for i in fruitList:
+    for i in fruit_list:
         print(i)
 
-def myTuple():
-    myTuple=tuple(["Max", 28, "SomethingHere"])
-    print("My Tuple:", myTuple, "#Tuples use () instead of [], faster, less memory")
+def my_tuple():
+    my_tuple=tuple(["Max", 28, "SomethingHere"])
+    print("My Tuple:", my_tuple, "#Tuples use () instead of [], faster, less memory")
 
-def dictionaryOnenTwo():
+def dictionary_one_n_two():
     define="#Dictionaries use {} or var=dict(key=\"value\")"
-    dictionaryOne=dict(name="Arti", age="27", city="Holiday")
-    print(dictionaryOne, define)
+    dictionary_one=dict(name="Arti", age="27", city="city")
+    print(dictionary_one, define)
 
-    dictionaryOne["email"]="somewhere@mail.com" #Adds "email": "mail.com" to dictionary
-    print(dictionaryOne, define)
+    dictionary_one["email"]="somewhere@mail.com" #Adds "email": "mail.com" to dictionary
+    print(dictionary_one, define)
 
-    dictionaryAlternate={"country":"US", "name":"Flarty"}
-    print("Alternate way:", dictionaryAlternate)
+    dictionary_alternate={"country":"US", "name":"Flarty"}
+    print("Alternate way:", dictionary_alternate)
 
-    dictionaryOne.update(dictionaryAlternate) #Merge dictionaryOne & dictionaryAlt
-    print("Merging dictionary:", dictionaryOne)
+    dictionary_one.update(dictionary_alternate) #Merge dictionaryOne & dictionaryAlt
+    print("Merging dictionary:", dictionary_one)
 
-    if "name" in dictionaryOne:
-        print("If name in dictionary, print:", dictionaryOne["name"])
+    if "name" in dictionary_one:
+        print("If name in dictionary, print:", dictionary_one["name"])
 
     try: #Try/Except alternative to if statement
-        print("Try/If statements alternate to if:",dictionaryOne["name"]) 
+        print("Try/If statements alternate to if:",dictionary_one["name"]) 
     except:
         print("Error")
 
-    for key in dictionaryOne:
+    for key in dictionary_one:
         print("If key in Dictionaryone, print key:", key)
 
-    for key in dictionaryOne.keys(): #Selects keys
+    for key in dictionary_one.keys(): #Selects keys
         print(key)
 
-    for value in dictionaryOne.values(): #Selects values
+    for value in dictionary_one.values(): #Selects values
         print(value)
 
-    for key, value in dictionaryOne.items(): #Selects both keys & values
+    for key, value in dictionary_one.items(): #Selects both keys & values
         print(key, value)
 
-def mySet():
+def my_set():
     define="Sets are Unordered, Mutable, No Duplicates"
-    mySet={1,2,3}
-    print("My Set:", mySet,define)
+    my_set={1,2,3}
+    print("My Set:", my_set,define)
 
-    mySetAlternate=set([1,2,3])
-    print("My Set Alternative:", mySetAlternate,define)
+    my_set_alternate=set([1,2,3])
+    print("My Set Alternative:", my_set_alternate,define)
 
-    mySetOdds={1,3,5}
-    mySetEvens={2,4,6}
-    mySetPrimes={2,3,5}
-    u=mySetOdds.union(mySetEvens) #Combines elements
+    my_set_odds={1,3,5}
+    my_set_evens={2,4,6}
+    my_set_primes={2,3,5}
+    u=my_set_odds.union(my_set_evens) #Combines elements
     print("Union:", u,define) 
 
-    intersect=mySetOdds.intersection(mySetPrimes) #Combines like elements
+    intersect=my_set_odds.intersection(my_set_primes) #Combines like elements
     print("Intersection:", intersect,define) 
 
-    diff=mySetEvens.difference(mySetPrimes,mySetOdds) #Differences in elements
+    diff=my_set_evens.difference(my_set_primes,my_set_odds) #Differences in elements
     print("Difference:", diff, define)
 
-def readFile():
+def read_file():
     ##r"FULLPATH" is raw file path##
     ##Below line lists contents in directory##
     for f in os.listdir(r"C:\Users\jslicker\Documents\Python"):
@@ -92,7 +92,7 @@ def readFile():
         print(employee) #Will print each employee in file
     employee_file.close() #Need to always close file afterwards
 
-def writeFile():
+def write_file():
     employee_file=open(r'C:\Users\jslicker\Documents\Python\TestFile.txt', "a")
     employee_file.write("\nArti / Accounting") #Append to file
     employee_file.close()
@@ -101,54 +101,54 @@ def writeFile():
     employee_file.close()
 
 def string():
-    myString="        Hello World"
-    myString=myString.strip() #Removes whitespace
-    print(myString, "#Removing Whitespace with .strip() method")
-    print(myString.upper(), myString.lower(), "#Upper and Lower with upper(), lower() methods")
-    print(myString.endswith('Hello')) #Returns boolean value 
-    print(myString.find('o')) #Returns index -1 if character/substring not found
-    print(myString.count('p')) #How many characters in string
-    print(myString.replace('World', 'Universe')) #Replaces first word with second
+    my_string="        Hello World"
+    my_string=my_string.strip() #Removes whitespace
+    print(my_string, "#Removing Whitespace with .strip() method")
+    print(my_string.upper(), myString.lower(), "#Upper and Lower with upper(), lower() methods")
+    print(my_string.endswith('Hello')) #Returns boolean value 
+    print(my_string.find('o')) #Returns index -1 if character/substring not found
+    print(my_string.count('p')) #How many characters in string
+    print(my_string.replace('World', 'Universe')) #Replaces first word with second
 
-    myList=myString.split(",") #Converts string to list
-    print(myList)
+    my_list=my_string.split(",") #Converts string to list
+    print(my_list)
 
-    newString=''.join(myList) #Converts list back to string, preferred as cleaner & faster than 'for i in myList: myString+=i
-    print(newString, '\n')
+    new_string=''.join(myList) #Converts list back to string, preferred as cleaner & faster than 'for i in myList: myString+=i
+    print(new_string, '\n')
 
     var="UsernameOne"
     var2="UsernameTwo"
     var3="NewVariable1"
     var4="NewVariable2"
-    myVar="The variable is %s" % var #Old format
-    print(myVar)
-    varNum=3
+    my_var="The variable is %s" % var #Old format
+    print(my_var)
+    var_num=3
 
-    myNum="The variable is %d" % varNum #Old format
-    print(myNum)
-    varFloat=5.512
+    my_num="The variable is %d" % varNum #Old format
+    print(my_num)
+    var_float=5.512
 
-    myFloat="The variable is %.2f" % varFloat #Old format, %.2f = two decimal places
-    print(myFloat)
+    my_float="The variable is %.2f" % var_float #Old format, %.2f = two decimal places
+    print(my_float)
 
-    myVar="The variable is {} and {}".format(var,var2)#New Format, multiple variables with "{} and {}".format
-    print(myVar)
+    my_var="The variable is {} and {}".format(var,var2)#New Format, multiple variables with "{} and {}".format
+    print(my_var)
 
-    myVar=f"The variable is {varFloat:.2f} and {varFloat:.2f}" #f is New Format, fastest
-    print(myVar, "#New Method")
+    my_var=f"The variable is {var_float:.2f} and {var_float:.2f}" #f is New Format, fastest
+    print(my_var, "#New Method")
 
-    myFloat="The variable is {:.2f}".format(varFloat) #New Format, :.2f = two decimal places
-    print(myFloat)
+    my_float="The variable is {:.2f}".format(var_float) #New Format, :.2f = two decimal places
+    print(my_float)
 
-def myCollections(): #Collections are containers that stores elements as dictionary keys and values
+def my_collections(): #Collections are containers that stores elements as dictionary keys and values
     from collections import Counter 
     a="aaaaaabbbbbbccccccdddd"
-    myCounter=Counter(a)
-    print("My Dictionary via Counter:", myCounter)
-    print("My keys: ", myCounter.keys())
-    print("My Values:", myCounter.values())
-    print(myCounter.most_common(1))
-    print("My list of elements: ", list(myCounter.elements()))
+    my_counter=Counter(a)
+    print("My Dictionary via Counter:", my_counter)
+    print("My keys: ", my_counter.keys())
+    print("My Values:", my_counter.values())
+    print(my_counter.most_common(1))
+    print("My list of elements: ", list(my_counter.elements()))
 
     from collections import namedtuple
     Point=namedtuple('Point', 'x,y') #Typically argument is same as variable, creates class Point w fields x & y
@@ -184,7 +184,7 @@ def myCollections(): #Collections are containers that stores elements as diction
     deq.rotate(2)
     print(deq)
 
-def iterTools(): #Iterators data types in for loops like lists
+def iter_tools(): #Iterators data types in for loops like lists
     from itertools import product, permutations, combinations_with_replacement, combinations, accumulate, groupby
     import operator
     a=[1,2]
@@ -614,9 +614,9 @@ if __name__ == "__main__":
 #readFile()
 #writeFile()
 #string()
-#myCollections()
-#iterTools()
-#lambdaFunction()
+#my_collections()
+#iter_tools()
+#lambda_function()
 #test_value(1)
 #jsonTut()
 #multiprocessing()
